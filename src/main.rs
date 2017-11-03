@@ -36,9 +36,11 @@ fn main() {
             Ordering::Equal   => {
                 println!("You won after {} tries! History:", counter);
 
-                for &(try, ref guess) in tries.iter() {
-                    let len = guess.len() - 1; // don't print newline
-                    println!("{}: {}", try, &guess[..len]);
+                for _ in 0..2 { // print history twice
+                    for &(try, ref guess) in tries.iter() {
+                        let len = guess.len() - 1; // don't print newline
+                        println!("{}: {}", try, &guess[..len]);
+                    }
                 }
 
                 break;

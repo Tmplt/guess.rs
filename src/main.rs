@@ -37,17 +37,17 @@ fn main() {
             Ordering::Equal   => {
                 println!("You won after {} tries! History:", counter);
 
-                // tries.reverse();
+                let mut try = counter;
+                for _ in 0..3 {
+                    if !tries.contains_key(&try) {
+                        break;
+                    }
 
-                // let mut i = 0;
-                for (try, guess) in tries {
-                    let len = guess.len() - 1; // don't print newline
+                    let guess = tries.get(&try).unwrap();
+                    let len = guess.len() - 1; // don't print the entered newline
                     println!("{}: {}", try, &guess[..len]);
 
-                    // i += 1;
-                    // if i == 2 {
-                    //     break;
-                    // }
+                    try -= 1;
                 }
 
                 break;

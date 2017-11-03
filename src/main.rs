@@ -8,13 +8,17 @@ fn main() {
     println!("Guess the number! Please input an integer");
 
     let secret_number = rand::thread_rng().gen_range(1, 101);
-    let mut tries = 0;
+    let mut tries : Vec<(u32, String)> = Vec::new();
+    let mut counter = 0;
 
     loop {
+        counter += 1;
         let mut guess = String::new();
 
         io::stdin().read_line(&mut guess)
             .expect("Failed to read line");
+
+        tries.push((counter, guess.clone()));
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
@@ -30,12 +34,15 @@ fn main() {
             Ordering::Less    => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
             Ordering::Equal   => {
-                println!("You won after {} tries!", tries + 1);
+                println!("You won after {} tries! History:", counter);
+
+                for &(try, ref guess) in tries.iter() {
+                    let len = guess.len() - 1; // don't print newline
+                    println!("{}: {}", try, &guess[..len]);
+                }
+
                 break;
             }
         }
-
-        tries += 1;
-        println!("Current amount of tries: {}", tries);
     }
 }

@@ -39,13 +39,12 @@ fn main() {
 
                 let mut try = counter;
                 for _ in 0..3 {
-                    if !tries.contains_key(&try) {
+                    if let Some(guess) = tries.get(&try) {
+                        let len = guess.len() - 1; // don't print newline
+                        println!("{}: {}", try, &guess[..len]);
+                    } else {
                         break;
                     }
-
-                    let guess = tries.get(&try).unwrap();
-                    let len = guess.len() - 1; // don't print the entered newline
-                    println!("{}: {}", try, &guess[..len]);
 
                     try -= 1;
                 }

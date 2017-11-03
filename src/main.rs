@@ -4,6 +4,17 @@ use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
 
+fn get_input() -> Result<u32, String> {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)
+        .expect("Failed to read line");
+
+    match input.trim().parse::<u32>() {
+        Ok(integer) => Ok(integer),
+        Err(_) => Err(String::from("input is not an integer!")),
+    }
+}
+
 fn main() {
     println!("Guess the number! Please input an integer");
 
@@ -11,15 +22,12 @@ fn main() {
     let mut tries = 0;
 
     loop {
-        let mut guess = String::new();
+        tries += 1;
 
-        io::stdin().read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_)  => {
-                println!("That wasn't an integer");
+        let guess = match get_input() {
+            Ok(integer) => integer,
+            Err(reason) => {
+                println!("in parsing u32, {}", reason);
                 continue;
             }
         };
@@ -30,12 +38,11 @@ fn main() {
             Ordering::Less    => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
             Ordering::Equal   => {
-                println!("You won after {} tries!", tries + 1);
+                println!("You won after {} tries!", tries);
                 break;
             }
         }
 
-        tries += 1;
         println!("Current amount of tries: {}", tries);
     }
 }
